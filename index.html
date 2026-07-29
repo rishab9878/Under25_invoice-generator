@@ -144,7 +144,29 @@
 
     <!-- Invoice -->
 
-    <div id="invoice" class="invoice">
+    <div id="invoiceModal" class="modal">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h2>Invoice Preview</h2>
+
+            <div>
+
+                <button id="downloadBtn" class="download-btn">
+                    Download PDF
+                </button>
+
+                <button id="closeBtn" class="close-btn">
+                    ✕
+                </button>
+
+            </div>
+
+        </div>
+
+        <div id="invoice" class="invoice">
 
         <div class="invoice-header">
 
@@ -279,10 +301,11 @@
 
             <p>Authorized Signature</p>
 
-        </div>
+</div> <!-- End Invoice -->
 
-    </div>
+</div> <!-- End Modal Content -->
 
+</div> <!-- End Modal -->
     <script src="script.js"></script>
 
 </body>
