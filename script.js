@@ -1,6 +1,6 @@
 console.log("Script Loaded");
 const form=document.getElementById("invoiceForm");
-const preview=document.getElementById("preview");
+const preview=document.getElementById("invoice");
 let sig="";
 document.getElementById("signature").addEventListener("change",e=>{
  const f=e.target.files[0];
