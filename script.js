@@ -1,4 +1,4 @@
-
+console.log("Script Loaded");
 const form=document.getElementById("invoiceForm");
 const preview=document.getElementById("preview");
 let sig="";
