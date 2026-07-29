@@ -76,11 +76,34 @@ if(sig){
 }
 
 preview.style.display = "block";
- const {jsPDF}=window.jspdf;
- const canvas=await html2canvas(preview,{scale:2});
- const img=canvas.toDataURL("image/png");
- const pdf=new jsPDF("p","mm","a4");
- const w=190,h=canvas.height*w/canvas.width;
- pdf.addImage(img,"PNG",10,10,w,h);
- pdf.save(`Invoice-${inv}.pdf`);
+document.getElementById("invoiceModal").style.display = "flex";
+});
+
+document.getElementById("downloadBtn").addEventListener("click", async () => {
+
+    const { jsPDF } = window.jspdf;
+
+    const invoice = document.getElementById("invoice");
+
+    const canvas = await html2canvas(invoice, {
+        scale: 2
+    });
+
+    const img = canvas.toDataURL("image/png");
+
+    const pdf = new jsPDF("p", "mm", "a4");
+
+    const w = 190;
+    const h = canvas.height * w / canvas.width;
+
+    pdf.addImage(img, "PNG", 10, 10, w, h);
+
+    pdf.save("Invoice.pdf");
+
+});
+
+document.getElementById("closeBtn").addEventListener("click", () => {
+
+    document.getElementById("invoiceModal").style.display = "none";
+
 });
