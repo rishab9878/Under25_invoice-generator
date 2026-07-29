@@ -27,24 +27,55 @@ form.addEventListener("submit",async e=>{
  const g=id=>document.getElementById(id).value;
  const inv=Math.floor(Math.random()*100)+1;
  const amt=Number(g("amount")).toLocaleString("en-IN");
- preview.innerHTML=`
- <h2>Tax Invoice</h2>
- <p><b>Invoice No:</b> ${inv}</p>
- <p><b>Date:</b> ${g("date")}</p>
- <h3>Bill To</h3>
- <p>${g("name")}<br>${g("address")}<br>${g("phone")}<br>${g("email")}<br>PAN: ${g("pan")}</p>
- <h3>Collective Artists Network India Pvt. Ltd.</h3>
- <p>GST:27AAHCP2434K1Z9</p>
- <table>
- <tr><th>ID</th><th>Description</th><th>Qty</th><th>Rate</th><th>Amount</th></tr>
- <tr><td>1</td><td>Performance Fee - ${g("event")}</td><td>1</td><td>₹${amt}</td><td>₹${amt}</td></tr>
- </table>
- <h3>Payment Details</h3>
- <p>${g("accountName")}<br>${g("accountNumber")}<br>${g("bankName")}<br>${g("ifsc")}</p>
- <h3>Total: ₹${amt}</h3>
- <p>${words(g("amount"))}</p>
- ${sig?`<img src="${sig}" style="height:80px"><p>Signature</p>`:''}
- `;
+document.getElementById("invoiceNumber").textContent = inv;
+
+document.getElementById("billDate").textContent = g("date");
+
+document.getElementById("billName").textContent = g("name");
+
+document.getElementById("billAddress").textContent = g("address");
+
+document.getElementById("billPhone").textContent = g("phone");
+
+document.getElementById("billEmail").textContent = g("email");
+
+document.getElementById("billPan").textContent = "PAN: " + g("pan");
+
+document.getElementById("description").textContent =
+    "Performance Fee - " + g("event");
+
+document.getElementById("rate").textContent =
+    "₹" + amt;
+
+document.getElementById("tableAmount").textContent =
+    "₹" + amt;
+
+document.getElementById("subtotal").textContent =
+    "₹" + amt;
+
+document.getElementById("total").textContent =
+    "₹" + amt;
+
+document.getElementById("amountWords").textContent =
+    words(g("amount"));
+
+document.getElementById("accName").textContent =
+    g("accountName");
+
+document.getElementById("accNumber").textContent =
+    g("accountNumber");
+
+document.getElementById("bank").textContent =
+    g("bankName");
+
+document.getElementById("ifscDisplay").textContent =
+    g("ifsc");
+
+if(sig){
+    document.getElementById("invoiceSignature").src = sig;
+}
+
+preview.style.display = "block";
  const {jsPDF}=window.jspdf;
  const canvas=await html2canvas(preview,{scale:2});
  const img=canvas.toDataURL("image/png");
