@@ -85,8 +85,6 @@ document.getElementById("downloadBtn").addEventListener("click", async () => {
 
     const invoice = document.getElementById("invoice");
 
-    const invoice = document.getElementById("invoice");
-
 const canvas = await html2canvas(invoice, {
     scale: 2,
     useCORS: true,
