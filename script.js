@@ -83,13 +83,85 @@ document.getElementById("invoiceModal").style.display = "flex";
 document.getElementById("downloadBtn").addEventListener("click", async () => {
 
     const { jsPDF } = window.jspdf;
-
     const invoice = document.getElementById("invoice");
 
-const canvas = await html2canvas(invoice, {
-    scale: 2,
-    useCORS: true,
-    backgroundColor: "#ffffff"
+    // Temporarily make invoice A4-sized for PDF generation
+    invoice.classList.add("pdf-mode");
+
+    // Give browser a moment to apply the A4 layout
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    const canvas = await html2canvas(invoice, {
+        scale: 1.5,
+        useCORS: true,
+        backgroundColor: "#ffffff",
+        logging: false,
+        width: invoice.scrollWidth,
+        height: invoice.scrollHeight,
+        windowWidth: invoice.scrollWidth,
+        windowHeight: invoice.scrollHeight
+    });
+
+    // Remove PDF mode and return invoice to normal responsive layout
+    invoice.classList.remove("pdf-mode");
+
+    const imgData = canvas.toDataURL("image/jpeg", 0.95);
+
+    const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
+        compress: true
+    });
+
+    const pageWidth = 210;
+    const pageHeight = 297;
+    const margin = 10;
+
+    const imgWidth = pageWidth - (margin * 2);
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    const usableHeight = pageHeight - (margin * 2);
+
+    let heightLeft = imgHeight;
+    let position = margin;
+
+    // First page
+    pdf.addImage(
+        imgData,
+        "JPEG",
+        margin,
+        position,
+        imgWidth,
+        imgHeight,
+        undefined,
+        "FAST"
+    );
+
+    heightLeft -= usableHeight;
+
+    // Additional pages if required
+    while (heightLeft > 0) {
+
+        position = margin - (imgHeight - heightLeft);
+
+        pdf.addPage();
+
+        pdf.addImage(
+            imgData,
+            "JPEG",
+            margin,
+            position,
+            imgWidth,
+            imgHeight,
+            undefined,
+            "FAST"
+        );
+
+        heightLeft -= usableHeight;
+    }
+
+    pdf.save("Invoice.pdf");
 });
 
     const img = canvas.toDataURL("image/png");
