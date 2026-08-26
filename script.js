@@ -26,8 +26,7 @@ form.addEventListener("submit",async e=>{
  e.preventDefault();
  const g=id=>document.getElementById(id).value;
  const inv=Math.floor(Math.random()*100)+1;
- const FIXED_AMOUNT = 2000;
- const amt = FIXED_AMOUNT.toLocaleString("en-IN");
+ const amt=Number(g("amount")).toLocaleString("en-IN");
 document.getElementById("invoiceNumber").textContent = inv;
 
 document.getElementById("billDate").textContent = g("date");
@@ -43,7 +42,7 @@ document.getElementById("billEmail").textContent = g("email");
 document.getElementById("billPan").textContent = "PAN: " + g("pan");
 
 document.getElementById("description").textContent =
-    "Professional Fees for UGC reel : Sheinverse UGC Campaign";
+    "Performance Fee - " + g("event");
 
 document.getElementById("rate").textContent =
     "₹" + amt;
@@ -58,8 +57,8 @@ document.getElementById("total").textContent =
     "₹" + amt;
 
 document.getElementById("amountWords").textContent =
-    words(FIXED_AMOUNT);
- 
+    words(g("amount"));
+
 document.getElementById("accName").textContent =
     g("accountName");
 
@@ -90,68 +89,6 @@ const canvas = await html2canvas(invoice, {
     scale: 2,
     useCORS: true,
     backgroundColor: "#ffffff"
-});
-
-    // Remove PDF mode and return invoice to normal responsive layout
-    invoice.classList.remove("pdf-mode");
-
-    const imgData = canvas.toDataURL("image/jpeg", 0.95);
-
-    const pdf = new jsPDF({
-        orientation: "portrait",
-        unit: "mm",
-        format: "a4",
-        compress: true
-    });
-
-    const pageWidth = 210;
-    const pageHeight = 297;
-    const margin = 10;
-
-    const imgWidth = pageWidth - (margin * 2);
-    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-    const usableHeight = pageHeight - (margin * 2);
-
-    let heightLeft = imgHeight;
-    let position = margin;
-
-    // First page
-    pdf.addImage(
-        imgData,
-        "JPEG",
-        margin,
-        position,
-        imgWidth,
-        imgHeight,
-        undefined,
-        "FAST"
-    );
-
-    heightLeft -= usableHeight;
-
-    // Additional pages if required
-    while (heightLeft > 0) {
-
-        position = margin - (imgHeight - heightLeft);
-
-        pdf.addPage();
-
-        pdf.addImage(
-            imgData,
-            "JPEG",
-            margin,
-            position,
-            imgWidth,
-            imgHeight,
-            undefined,
-            "FAST"
-        );
-
-        heightLeft -= usableHeight;
-    }
-
-    pdf.save("Invoice.pdf");
 });
 
     const img = canvas.toDataURL("image/png");
