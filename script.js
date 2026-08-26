@@ -83,24 +83,14 @@ document.getElementById("invoiceModal").style.display = "flex";
 document.getElementById("downloadBtn").addEventListener("click", async () => {
 
     const { jsPDF } = window.jspdf;
+
     const invoice = document.getElementById("invoice");
 
-    // Temporarily make invoice A4-sized for PDF generation
-    invoice.classList.add("pdf-mode");
-
-    // Give browser a moment to apply the A4 layout
-    await new Promise(resolve => setTimeout(resolve, 100));
-
-    const canvas = await html2canvas(invoice, {
-        scale: 1.5,
-        useCORS: true,
-        backgroundColor: "#ffffff",
-        logging: false,
-        width: invoice.scrollWidth,
-        height: invoice.scrollHeight,
-        windowWidth: invoice.scrollWidth,
-        windowHeight: invoice.scrollHeight
-    });
+const canvas = await html2canvas(invoice, {
+    scale: 2,
+    useCORS: true,
+    backgroundColor: "#ffffff"
+});
 
     // Remove PDF mode and return invoice to normal responsive layout
     invoice.classList.remove("pdf-mode");
