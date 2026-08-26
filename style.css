@@ -265,7 +265,9 @@ table td{
 
 .invoice{
     width:100%;
+    max-width:100%;
     padding:25px;
+    box-sizing:border-box;
 }
 
 .invoice-header{
