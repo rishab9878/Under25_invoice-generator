@@ -265,9 +265,7 @@ table td{
 
 .invoice{
     width:100%;
-    max-width:100%;
     padding:25px;
-    box-sizing:border-box;
 }
 
 .invoice-header{
@@ -404,13 +402,4 @@ table td{
 
     margin-bottom:10px;
 
-}
-
-/* PDF generation mode */
-.invoice.pdf-mode {
-    width: 210mm !important;
-    max-width: 210mm !important;
-    min-width: 210mm !important;
-    padding: 40px !important;
-    box-sizing: border-box !important;
 }
