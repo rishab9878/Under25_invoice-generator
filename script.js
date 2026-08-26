@@ -26,7 +26,7 @@ form.addEventListener("submit",async e=>{
  e.preventDefault();
  const g=id=>document.getElementById(id).value;
  const inv=Math.floor(Math.random()*100)+1;
- const FIXED_AMOUNT = 1000;
+ const FIXED_AMOUNT = 2000;
  const amt = FIXED_AMOUNT.toLocaleString("en-IN");
 document.getElementById("invoiceNumber").textContent = inv;
 
@@ -58,8 +58,8 @@ document.getElementById("total").textContent =
     "₹" + amt;
 
 document.getElementById("amountWords").textContent =
-    words(g("amount"));
-
+    words(FIXED_AMOUNT);
+ 
 document.getElementById("accName").textContent =
     g("accountName");
 
