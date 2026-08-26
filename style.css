@@ -406,3 +406,11 @@ table td{
 
 }
 
+/* PDF generation mode */
+.invoice.pdf-mode {
+    width: 210mm !important;
+    max-width: 210mm !important;
+    min-width: 210mm !important;
+    padding: 40px !important;
+    box-sizing: border-box !important;
+}
