@@ -58,7 +58,7 @@ document.getElementById("total").textContent =
     "₹" + amt;
 
 document.getElementById("amountWords").textContent =
-    words(g("amount"));
+    words(FIXED_AMOUNT);
 
 document.getElementById("accName").textContent =
     g("accountName");
