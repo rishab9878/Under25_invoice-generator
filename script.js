@@ -26,7 +26,8 @@ form.addEventListener("submit",async e=>{
  e.preventDefault();
  const g=id=>document.getElementById(id).value;
  const inv=Math.floor(Math.random()*100)+1;
- const amt=Number(g("amount")).toLocaleString("en-IN");
+ const FIXED_AMOUNT = 2000;
+ const amt = FIXED_AMOUNT.toLocaleString("en-IN");
 document.getElementById("invoiceNumber").textContent = inv;
 
 document.getElementById("billDate").textContent = g("date");
@@ -42,7 +43,7 @@ document.getElementById("billEmail").textContent = g("email");
 document.getElementById("billPan").textContent = "PAN: " + g("pan");
 
 document.getElementById("description").textContent =
-    "Performance Fee - " + g("event");
+    "Professional Fees for UGC reel : Sheinverse UGC Campaign";
 
 document.getElementById("rate").textContent =
     "₹" + amt;
