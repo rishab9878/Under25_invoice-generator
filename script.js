@@ -42,7 +42,7 @@ document.getElementById("billEmail").textContent = g("email");
 document.getElementById("billPan").textContent = "PAN: " + g("pan");
 
 document.getElementById("description").textContent =
-    "Performance Fee - " + g("event");
+    "Professional Fees for UGC reel : Sheinverse UGC Campaign";
 
 document.getElementById("rate").textContent =
     "₹" + amt;
