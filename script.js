@@ -26,8 +26,17 @@ form.addEventListener("submit",async e=>{
  e.preventDefault();
  const g=id=>document.getElementById(id).value;
  const inv=Math.floor(Math.random()*100)+1;
- const FIXED_AMOUNT = 2000;
- const amt = FIXED_AMOUNT.toLocaleString("en-IN");
+ const amountInput = Number(g("amount"));
+
+if (!amountInput || amountInput <= 0) {
+    alert("Please enter a valid amount.");
+    return;
+}
+
+const amt = amountInput.toLocaleString("en-IN", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+});
 document.getElementById("invoiceNumber").textContent = inv;
 
 document.getElementById("billDate").textContent = g("date");
@@ -58,7 +67,7 @@ document.getElementById("total").textContent =
     "₹" + amt;
 
 document.getElementById("amountWords").textContent =
-    words(FIXED_AMOUNT);
+    words(amountInput);
 
 document.getElementById("accName").textContent =
     g("accountName");
