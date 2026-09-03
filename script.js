@@ -52,7 +52,7 @@ document.getElementById("billEmail").textContent = g("email");
 document.getElementById("billPan").textContent = "PAN: " + g("pan");
 
 document.getElementById("description").textContent =
-    "Professional Fees for driving registerations";
+    g("invoiceDescription");
 
 document.getElementById("rate").textContent =
     "₹" + amt;
