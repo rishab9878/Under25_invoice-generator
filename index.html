@@ -26,7 +26,7 @@
     <div class="header">
     <h1>Invoice Generator</h1>
 </div>
-        <form id="invoiceForm">
+        <form id="invoiceForm" novalidate>
 
             <div class="section">
 
@@ -35,28 +35,28 @@
                 <div class="grid">
 
                     <div class="field">
-                        <label>Name</label>
-                        <input type="text" id="name" required>
+                        <label for="name">Name <span class="required-mark">*</span></label>
+                        <input type="text" id="name" name="name" required minlength="2" maxlength="100" pattern="[A-Za-z][A-Za-z .\'-]*" autocomplete="name" title="Enter a valid name using letters, spaces, periods, apostrophes or hyphens.">
                     </div>
 
                     <div class="field">
-                        <label>Phone Number</label>
-                        <input type="text" id="phone" required>
+                        <label for="phone">Phone Number <span class="required-mark">*</span></label>
+                        <input type="tel" id="phone" name="phone" required inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" autocomplete="tel" title="Enter a valid 10-digit Indian mobile number starting with 6, 7, 8 or 9.">
                     </div>
 
                     <div class="field full">
-                        <label>Full Address with Pincode</label>
-                        <textarea id="address" rows="3" required></textarea>
+                        <label for="address">Full Address with Pincode <span class="required-mark">*</span></label>
+                        <textarea id="address" name="address" rows="3" required minlength="10" maxlength="300" autocomplete="street-address" placeholder="House/Flat, Street, Area, City, State - Pincode"></textarea>
                     </div>
 
                     <div class="field">
-                        <label>Email</label>
-                        <input type="email" id="email" required>
+                        <label for="email">Email <span class="required-mark">*</span></label>
+                        <input type="email" id="email" name="email" required maxlength="254" autocomplete="email" placeholder="name@example.com">
                     </div>
 
                     <div class="field">
-                        <label>PAN Number</label>
-                        <input type="text" id="pan" required>
+                        <label for="pan">PAN Number <span class="required-mark">*</span></label>
+                        <input type="text" id="pan" name="pan" required minlength="10" maxlength="10" pattern="[A-Za-z]{5}[0-9]{4}[A-Za-z]" autocomplete="off" style="text-transform:uppercase" title="Enter a valid 10-character PAN, e.g. ABCDE1234F.">
                     </div>
 
                 </div>
@@ -70,11 +70,11 @@
                 <div class="grid">
 
     <div class="field">
-        <label>Date</label>
-        <input type="date" id="date" required>
+        <label for="date">Date <span class="required-mark">*</span></label>
+        <input type="date" id="date" name="date" required>
     </div>
                     <div class="field full">
-            <label>Invoice Description</label>
+            <label for="invoiceDescription">Invoice Description <span class="required-mark">*</span></label>
             <select id="invoiceDescription" required>
                 <option value="" disabled selected>Select a description</option>
 
@@ -93,8 +93,8 @@
                     </div>
 
     <div class="field">
-        <label>Amount (₹)</label>
-       <input type="text" id="amount" inputmode="decimal" placeholder="Enter amount" required>
+        <label for="amount">Amount (₹) <span class="required-mark">*</span></label>
+       <input type="text" id="amount" name="amount" inputmode="decimal" placeholder="Enter amount" required maxlength="15" autocomplete="off" title="Enter a positive amount with up to 2 decimal places.">
     </div>
 
 </div>
@@ -109,23 +109,23 @@
                 <div class="grid">
 
                     <div class="field">
-                        <label>Account Name</label>
-                        <input type="text" id="accountName" required>
+                        <label for="accountName">Account Name <span class="required-mark">*</span></label>
+                        <input type="text" id="accountName" name="accountName" required minlength="2" maxlength="100" pattern="[A-Za-z][A-Za-z .\'&-]*" autocomplete="off" title="Enter the account holder name.">
                     </div>
 
                     <div class="field">
-                        <label>Account Number</label>
-                        <input type="text" id="accountNumber" required>
+                        <label for="accountNumber">Account Number <span class="required-mark">*</span></label>
+                        <input type="text" id="accountNumber" name="accountNumber" required minlength="9" maxlength="18" inputmode="numeric" pattern="[0-9]{9,18}" autocomplete="off" title="Enter a valid bank account number containing 9 to 18 digits.">
                     </div>
 
                     <div class="field">
-                        <label>Bank Name</label>
-                        <input type="text" id="bankName" required>
+                        <label for="bankName">Bank Name <span class="required-mark">*</span></label>
+                        <input type="text" id="bankName" name="bankName" required minlength="2" maxlength="100" autocomplete="off">
                     </div>
 
                     <div class="field">
-                        <label>IFSC Code</label>
-                        <input type="text" id="ifsc" required>
+                        <label for="ifsc">IFSC Code <span class="required-mark">*</span></label>
+                        <input type="text" id="ifsc" name="ifsc" required minlength="11" maxlength="11" pattern="[A-Za-z]{4}0[A-Za-z0-9]{6}" autocomplete="off" title="Enter a valid 11-character IFSC code, e.g. SBIN0001234.">
                     </div>
 
                 </div>
@@ -134,17 +134,23 @@
 
             <div class="section">
 
-                <h2>Signature</h2>
+                <h2>Signature <span class="required-mark">*</span></h2>
 
                 <input type="file"
                     id="signature"
-                    accept="image/png,image/jpeg,image/jpg">
+                    name="signature"
+                    accept="image/png,image/jpeg,image/jpg"
+                    required
+                    aria-describedby="signatureHelp">
+                <small id="signatureHelp" class="field-help">PNG or JPG only. Maximum file size: 2 MB.</small>
 
                 <img
                     id="signaturePreview"
                     class="signature-preview">
 
             </div>
+
+            <div id="formError" class="form-error" role="alert" aria-live="polite"></div>
 
             <button type="submit" class="generate-btn">
                 Generate Invoice
