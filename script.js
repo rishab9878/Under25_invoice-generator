@@ -26,7 +26,7 @@ form.addEventListener("submit",async e=>{
  e.preventDefault();
  const g=id=>document.getElementById(id).value;
  const inv=Math.floor(Math.random()*100)+1;
- const FIXED_AMOUNT = 2000;
+ const FIXED_AMOUNT = parseFloat(g("amount").replace(/,/g, ""));
  const amt = FIXED_AMOUNT.toLocaleString("en-IN");
 document.getElementById("invoiceNumber").textContent = inv;
 
