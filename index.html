@@ -8,325 +8,287 @@
 
     <link rel="stylesheet" href="style.css">
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- html2canvas -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
     <!-- jsPDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 
 <body>
 
-    <div class="container">
+    <div class="page">
+        <div class="container">
 
-    <div class="header">
-    <h1>Invoice Generator</h1>
-</div>
-        <form id="invoiceForm" novalidate>
+            <div class="header">
+                <span class="header-eyebrow">Under25</span>
+                <h1>Generate your invoice</h1>
+            </div>
 
-            <div class="section">
+            <form id="invoiceForm" novalidate>
 
-                <h2>Personal Details</h2>
+                <div id="formError" class="form-error" role="alert" aria-live="polite" hidden></div>
 
-                <div class="grid">
+                <!-- 1. Personal Details -->
+                <div class="section">
+                    <h2>Personal details</h2>
 
-                    <div class="field">
-                        <label for="name">Name <span class="required-mark">*</span></label>
-                        <input type="text" id="name" name="name" required minlength="2" maxlength="100" pattern="[A-Za-z][A-Za-z .\'-]*" autocomplete="name" title="Enter a valid name using letters, spaces, periods, apostrophes or hyphens.">
+                    <div class="grid">
+
+                        <div class="field">
+                            <label for="name">Full name</label>
+                            <input type="text" id="name" name="name" required minlength="2" maxlength="100"
+                                pattern="[A-Za-z][A-Za-z .'\-]*" autocomplete="name" placeholder="e.g. Aarav Sharma">
+                            <p class="field-error" id="nameError"></p>
+                        </div>
+
+                        <div class="field">
+                            <label for="phone">Phone number</label>
+                            <div class="input-affix">
+                                <span class="affix">+91</span>
+                                <input type="tel" id="phone" name="phone" required inputmode="numeric" maxlength="10"
+                                    autocomplete="tel" placeholder="98765 43210">
+                            </div>
+                            <p class="field-error" id="phoneError"></p>
+                        </div>
+
+                        <div class="field full">
+                            <label for="address">Full address with pincode</label>
+                            <textarea id="address" name="address" rows="3" required minlength="10" maxlength="300"
+                                autocomplete="street-address"
+                                placeholder="House/Flat, street, area, city, state — pincode"></textarea>
+                            <p class="field-error" id="addressError"></p>
+                        </div>
+
+                        <div class="field">
+                            <label for="email">Email address</label>
+                            <input type="email" id="email" name="email" required maxlength="254" autocomplete="email"
+                                placeholder="name@example.com">
+                            <p class="field-error" id="emailError"></p>
+                        </div>
+
+                        <div class="field">
+                            <label for="pan">PAN number</label>
+                            <input type="text" id="pan" name="pan" required minlength="10" maxlength="10"
+                                autocomplete="off" placeholder="ABCDE1234F" class="uppercase-input">
+                            <p class="field-error" id="panError"></p>
+                        </div>
+
                     </div>
-
-                    <div class="field">
-                        <label for="phone">Phone Number <span class="required-mark">*</span></label>
-                        <input type="tel" id="phone" name="phone" required inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" autocomplete="tel" title="Enter a valid 10-digit Indian mobile number starting with 6, 7, 8 or 9.">
-                    </div>
-
-                    <div class="field full">
-                        <label for="address">Full Address with Pincode <span class="required-mark">*</span></label>
-                        <textarea id="address" name="address" rows="3" required minlength="10" maxlength="300" autocomplete="street-address" placeholder="House/Flat, Street, Area, City, State - Pincode"></textarea>
-                    </div>
-
-                    <div class="field">
-                        <label for="email">Email <span class="required-mark">*</span></label>
-                        <input type="email" id="email" name="email" required maxlength="254" autocomplete="email" placeholder="name@example.com">
-                    </div>
-
-                    <div class="field">
-                        <label for="pan">PAN Number <span class="required-mark">*</span></label>
-                        <input type="text" id="pan" name="pan" required minlength="10" maxlength="10" pattern="[A-Za-z]{5}[0-9]{4}[A-Za-z]" autocomplete="off" style="text-transform:uppercase" title="Enter a valid 10-character PAN, e.g. ABCDE1234F.">
-                    </div>
-
                 </div>
 
-            </div>
+                <!-- 2. Invoice Details -->
+                <div class="section">
+                    <h2>Invoice details</h2>
 
-            <div class="section">
+                    <div class="grid">
 
-                <h2>Invoice Details</h2>
+                        <div class="field">
+                            <label for="date">Bill date</label>
+                            <input type="date" id="date" name="date" required>
+                            <p class="field-error" id="dateError"></p>
+                        </div>
 
-                <div class="grid">
+                        <div class="field">
+                            <label for="amount">Amount</label>
+                            <div class="input-affix">
+                                <span class="affix">₹</span>
+                                <input type="text" id="amount" name="amount" inputmode="decimal"
+                                    placeholder="0.00" required maxlength="12" autocomplete="off">
+                            </div>
+                            <p class="field-error" id="amountError"></p>
+                        </div>
 
-    <div class="field">
-        <label for="date">Date <span class="required-mark">*</span></label>
-        <input type="date" id="date" name="date" required>
-    </div>
-                    <div class="field full">
-            <label for="invoiceDescription">Invoice Description <span class="required-mark">*</span></label>
-            <select id="invoiceDescription" required>
-                <option value="" disabled selected>Select a description</option>
+                        <div class="field full">
+                            <label for="invoiceDescription">Invoice description</label>
+                            <select id="invoiceDescription" required>
+                                <option value="" disabled selected>Select a description</option>
+                                <option value="Professional fees for driving Sheinverse registrations">
+                                    Professional fees for driving Sheinverse registrations
+                                </option>
+                                <option value="Professional fees for College Activations: Wok Tok">
+                                    Professional fees for College Activations: Wok Tok
+                                </option>
+                                <option value="Professional fees for Registrations: Goibibo Campaign">
+                                    Professional fees for Registrations: Goibibo Campaign
+                                </option>
+                            </select>
+                            <p class="field-error" id="invoiceDescriptionError"></p>
+                        </div>
 
-                <option value="Professional fees for driving Sheinverse registrations">
-                    Professional Fees for driving Sheinverse registrations
-                </option>
-
-                <option value="Professional Fees College Activations : Wok Tok">
-                    Professional Fees for College Activations : Wok Tok
-                </option>
-
-                <option value="Professional Fees for Registrations : Goibibo Campaign">
-                    Professional Fees for Registrations : Goibibo Campaign
-                </option>
-            </select>
                     </div>
-
-    <div class="field">
-        <label for="amount">Amount (₹) <span class="required-mark">*</span></label>
-       <input type="text" id="amount" name="amount" inputmode="decimal" placeholder="Enter amount" required maxlength="15" autocomplete="off" title="Enter a positive amount with up to 2 decimal places.">
-    </div>
-
-</div>
-                
-
-            </div>
-
-            <div class="section">
-
-                <h2>Bank Details</h2>
-
-                <div class="grid">
-
-                    <div class="field">
-                        <label for="accountName">Account Name <span class="required-mark">*</span></label>
-                        <input type="text" id="accountName" name="accountName" required minlength="2" maxlength="100" pattern="[A-Za-z][A-Za-z .\'&-]*" autocomplete="off" title="Enter the account holder name.">
-                    </div>
-
-                    <div class="field">
-                        <label for="accountNumber">Account Number <span class="required-mark">*</span></label>
-                        <input type="text" id="accountNumber" name="accountNumber" required minlength="9" maxlength="18" inputmode="numeric" pattern="[0-9]{9,18}" autocomplete="off" title="Enter a valid bank account number containing 9 to 18 digits.">
-                    </div>
-
-                    <div class="field">
-                        <label for="bankName">Bank Name <span class="required-mark">*</span></label>
-                        <input type="text" id="bankName" name="bankName" required minlength="2" maxlength="100" autocomplete="off">
-                    </div>
-
-                    <div class="field">
-                        <label for="ifsc">IFSC Code <span class="required-mark">*</span></label>
-                        <input type="text" id="ifsc" name="ifsc" required minlength="11" maxlength="11" pattern="[A-Za-z]{4}0[A-Za-z0-9]{6}" autocomplete="off" title="Enter a valid 11-character IFSC code, e.g. SBIN0001234.">
-                    </div>
-
                 </div>
 
-            </div>
+                <!-- 3. Bank Details -->
+                <div class="section">
+                    <h2>Bank details</h2>
 
-            <div class="section">
+                    <div class="grid">
 
-                <h2>Signature <span class="required-mark">*</span></h2>
+                        <div class="field">
+                            <label for="accountName">Account holder name</label>
+                            <input type="text" id="accountName" name="accountName" required minlength="2"
+                                maxlength="100" autocomplete="off" placeholder="As per bank records">
+                            <p class="field-error" id="accountNameError"></p>
+                        </div>
 
-                <input type="file"
-                    id="signature"
-                    name="signature"
-                    accept="image/png,image/jpeg,image/jpg"
-                    required
-                    aria-describedby="signatureHelp">
-                <small id="signatureHelp" class="field-help">PNG or JPG only. Maximum file size: 2 MB.</small>
+                        <div class="field">
+                            <label for="accountNumber">Account number</label>
+                            <input type="text" id="accountNumber" name="accountNumber" required minlength="9"
+                                maxlength="18" inputmode="numeric" autocomplete="off" placeholder="1234567890">
+                            <p class="field-error" id="accountNumberError"></p>
+                        </div>
 
-                <img
-                    id="signaturePreview"
-                    class="signature-preview">
+                        <div class="field">
+                            <label for="bankName">Bank name</label>
+                            <input type="text" id="bankName" name="bankName" required minlength="2" maxlength="100"
+                                autocomplete="off" placeholder="e.g. HDFC Bank">
+                            <p class="field-error" id="bankNameError"></p>
+                        </div>
 
-            </div>
+                        <div class="field">
+                            <label for="ifsc">IFSC code</label>
+                            <input type="text" id="ifsc" name="ifsc" required minlength="11" maxlength="11"
+                                autocomplete="off" placeholder="SBIN0001234" class="uppercase-input">
+                            <p class="field-error" id="ifscError"></p>
+                        </div>
 
-            <div id="formError" class="form-error" role="alert" aria-live="polite"></div>
+                    </div>
+                </div>
 
-            <button type="submit" class="generate-btn">
-                Generate Invoice
-            </button>
+                <!-- 4. Signature -->
+                <div class="section">
+                    <h2>Signature</h2>
 
-        </form>
+                    <div class="signature-upload" id="signatureDrop">
+                        <input type="file" id="signature" name="signature" accept="image/png,image/jpeg,image/jpg"
+                            required aria-describedby="signatureHelp">
+                        <div class="signature-upload-body" id="signatureBody">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2M7 9l5-5 5 5M12 4v12"
+                                    stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span><strong>Tap to upload</strong> your signature</span>
+                            <small id="signatureHelp">PNG or JPG, up to 2 MB</small>
+                        </div>
+                        <div class="signature-preview-row" id="signaturePreviewRow" hidden>
+                            <img id="signaturePreview" alt="Signature preview">
+                            <div class="signature-preview-meta">
+                                <span id="signatureFileName"></span>
+                                <button type="button" id="signatureRemove" class="link-btn">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="field-error" id="signatureError"></p>
+                </div>
 
-    </div>
-
-    <!-- Invoice -->
-
-    <div id="invoiceModal" class="modal">
-
-    <div class="modal-content">
-
-        <div class="modal-header">
-
-            <h2>Invoice Preview</h2>
-
-                <button id="closeBtn" class="close-btn">
-                    ✕
+                <button type="submit" class="generate-btn" id="generateBtn">
+                    <span>Generate invoice</span>
                 </button>
 
+            </form>
 
         </div>
+    </div>
 
-        <div id="invoice" class="invoice">
+    <!-- Invoice Preview Modal -->
+    <div id="invoiceModal" class="modal">
+        <div class="modal-content">
 
-        <div class="invoice-header">
-
-            <div>
-
-                <h1>Tax Invoice</h1>
-
+            <div class="modal-header">
+                <h2>Invoice preview</h2>
+                <button id="closeBtn" class="close-btn" aria-label="Close preview">✕</button>
             </div>
 
-            <div class="invoice-meta">
+            <div class="invoice-scale-wrapper" id="invoiceScaleWrapper">
+                <div id="invoice" class="invoice">
 
-                <p><strong>Invoice Number:</strong> <span id="invoiceNumber"></span></p>
+                    <div class="invoice-header">
+                        <div>
+                            <span class="invoice-brand">Collective Artists Network India Pvt Ltd</span>
+                            <h1>Tax Invoice</h1>
+                        </div>
+                        <div class="invoice-meta">
+                            <p><span>Invoice number</span><strong id="invoiceNumber"></strong></p>
+                            <p><span>Bill date</span><strong id="billDate"></strong></p>
+                        </div>
+                    </div>
 
-                <p><strong>Bill Date:</strong> <span id="billDate"></span></p>
+                    <hr>
 
+                    <div class="bill-section">
+                        <div>
+                            <h3>Bill to</h3>
+                            <p id="billName"></p>
+                            <p id="billAddress"></p>
+                            <p id="billPhone"></p>
+                            <p id="billEmail"></p>
+                            <p id="billPan"></p>
+                        </div>
+                        <div>
+                            <h3>Collective Artists Network India Pvt Ltd</h3>
+                            <p>5th Floor, Lotus Business Park, New Link Road, Andheri West, Mumbai, Maharashtra – 400053</p>
+                            <p><strong>GST number:</strong> 27AAHCP2434K1Z9</p>
+                            <p><strong>PAN number:</strong> AAHCP2434K</p>
+                        </div>
+                    </div>
 
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Description</th>
+                                <th>Qty</th>
+                                <th>Rate</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td id="description"></td>
+                                <td>1</td>
+                                <td id="rate"></td>
+                                <td id="tableAmount"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="payment">
+                        <div>
+                            <h3>Payment details</h3>
+                            <p><strong>Account name:</strong> <span id="accName"></span></p>
+                            <p><strong>Account number:</strong> <span id="accNumber"></span></p>
+                            <p><strong>Bank name:</strong> <span id="bank"></span></p>
+                            <p><strong>IFSC:</strong> <span id="ifscDisplay"></span></p>
+                        </div>
+                        <div class="totals">
+                            <p>Subtotal <span id="subtotal"></span></p>
+                            <h2>Total <span id="total"></span></h2>
+                            <p id="amountWords"></p>
+                        </div>
+                    </div>
+
+                    <div class="signature-section">
+                        <img id="invoiceSignature" alt="Signature">
+                        <p>Authorized signature</p>
+                    </div>
+
+                </div>
             </div>
 
-        </div>
-
-        <hr>
-
-        <div class="bill-section">
-
-            <div>
-
-                <h3>Bill To</h3>
-
-                <p id="billName"></p>
-
-                <p id="billAddress"></p>
-
-                <p id="billPhone"></p>
-
-                <p id="billEmail"></p>
-
-                <p id="billPan"></p>
-
-            </div>
-
-            <div>
-
-                <h3>Collective Artists Network India Pvt Ltd</h3>
-
-                <p>
-                    5th Floor, Lotus Business Park,
-                    New Link Road,
-                    Andheri West,
-                    Mumbai,
-                    Maharashtra - 400053
-                </p>
-
-                <p><strong>GST Number:</strong> 27AAHCP2434K1Z9</p>
-
-                <p><strong>PAN Number:</strong> AAHCP2434K</p>
-
-            </div>
-
-        </div>
-
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>ID</th>
-
-                    <th>Description</th>
-
-                    <th>Qty</th>
-
-                    <th>Rate</th>
-
-                    <th>Amount</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                <tr>
-
-                    <td>1</td>
-
-                    <td id="description"></td>
-
-                    <td>1</td>
-
-                    <td id="rate"></td>
-
-                    <td id="tableAmount"></td>
-
-                </tr>
-
-            </tbody>
-
-        </table>
-
-        <div class="payment">
-
-            <div>
-
-                <h3>Payment Details</h3>
-
-                <p><strong>Account Name:</strong> <span id="accName"></span></p>
-
-                <p><strong>Account Number:</strong> <span id="accNumber"></span></p>
-
-                <p><strong>Bank Name:</strong> <span id="bank"></span></p>
-
-                <p><strong>IFSC:</strong> <span id="ifscDisplay"></span></p>
-
-            </div>
-
-            <div class="totals">
-
-                <p>Subtotal : <span id="subtotal"></span></p>
-
-                <h2>Total : <span id="total"></span></h2>
-
-                <p id="amountWords"></p>
-
+            <div class="download-wrapper">
+                <button id="downloadBtn" class="download-btn">
+                    <span id="downloadBtnLabel">Download PDF</span>
+                </button>
             </div>
 
         </div>
+    </div>
 
-        <div class="signature-section">
-
-    <img id="invoiceSignature">
-
-    <p>Authorized Signature</p>
-
-</div> <!-- End Signature -->
-
-</div> <!-- End Invoice -->
-
-<div class="download-wrapper">
-
-    <button id="downloadBtn" class="download-btn">
-        Download PDF
-    </button>
-
-</div>
-
-</div> <!-- End Modal Content -->
-
-</div> <!-- End Modal -->
     <script src="script.js"></script>
 
 </body>
