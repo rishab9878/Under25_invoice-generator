@@ -1,54 +1,131 @@
+/* ---------------------------------------------------
+   Design tokens
+--------------------------------------------------- */
+:root{
+    --ink:#1B2A4A;
+    --ink-soft:#4A5670;
+    --paper:#EEF1F6;
+    --card:#FFFFFF;
+    --border:#DEE3ED;
+    --border-strong:#C4CCDC;
+    --accent:#1B2A4A;
+    --accent-hover:#101B33;
+    --success:#2F7D5B;
+    --success-hover:#256549;
+    --error:#C0392B;
+    --error-bg:#FBEAE8;
+    --radius-lg:16px;
+    --radius-md:10px;
+    --radius-sm:6px;
+    --font-display:'Source Serif 4', Georgia, serif;
+    --font-body:'Inter', sans-serif;
+}
+
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:'Inter',sans-serif;
 }
 
 body{
-    background:#f5f7fb;
-    padding:40px;
-    color:#222;
+    font-family:var(--font-body);
+    background:var(--paper);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
 }
 
+.page{
+    padding:32px 16px 64px;
+}
+
+/* ---------------------------------------------------
+   Form container
+--------------------------------------------------- */
 .container{
-    max-width:900px;
-    margin:auto;
-    background:#fff;
+    max-width:720px;
+    margin:0 auto;
+    background:var(--card);
     padding:40px;
-    border-radius:16px;
-    box-shadow:0 10px 30px rgba(0,0,0,.08);
+    border-radius:var(--radius-lg);
+    border:1px solid var(--border);
+    box-shadow:0 20px 50px -30px rgba(27,42,74,.35);
 }
 
 .header{
-    text-align:center;
-    margin-bottom:40px;
+    margin-bottom:36px;
+}
+
+.header-eyebrow{
+    display:inline-block;
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink-soft);
+    margin-bottom:10px;
 }
 
 .header h1{
-    font-size:34px;
-    font-weight:700;
+    font-family:var(--font-display);
+    font-size:32px;
+    font-weight:600;
+    letter-spacing:-0.01em;
     margin-bottom:8px;
 }
 
 .header p{
-    color:#666;
+    color:var(--ink-soft);
+    font-size:15px;
+    max-width:46ch;
+    line-height:1.5;
+}
+
+/* ---------------------------------------------------
+   Sections — numbered automatically via counters
+--------------------------------------------------- */
+form{
+    counter-reset:section;
 }
 
 .section{
-    margin-bottom:35px;
+    counter-increment:section;
+    padding:28px 0;
+    border-top:1px solid var(--border);
+}
+
+.section:first-of-type{
+    border-top:none;
+    padding-top:0;
 }
 
 .section h2{
-    margin-bottom:20px;
-    font-size:22px;
-    color:#222;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-family:var(--font-body);
+    font-size:16px;
+    font-weight:600;
+    margin-bottom:22px;
+}
+
+.section h2::before{
+    content:counter(section);
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:26px;
+    height:26px;
+    flex-shrink:0;
+    border-radius:50%;
+    background:var(--ink);
+    color:#fff;
+    font-family:var(--font-body);
+    font-size:13px;
+    font-weight:600;
 }
 
 .grid{
     display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:18px;
+    grid-template-columns:repeat(2, 1fr);
+    gap:20px 18px;
 }
 
 .field{
@@ -61,25 +138,27 @@ body{
 }
 
 label{
-    margin-bottom:8px;
-    font-size:14px;
+    margin-bottom:7px;
+    font-size:13.5px;
     font-weight:600;
+    color:var(--ink);
 }
 
+/* ---------------------------------------------------
+   Inputs
+--------------------------------------------------- */
 input,
-textarea{
+textarea,
+select{
     width:100%;
-    padding:14px;
-    border:1px solid #dcdcdc;
-    border-radius:10px;
+    padding:13px 14px;
+    border:1.5px solid var(--border-strong);
+    border-radius:var(--radius-md);
     font-size:15px;
-    transition:.25s;
-}
-
-input:focus,
-textarea:focus{
-    outline:none;
-    border-color:#3b82f6;
+    font-family:var(--font-body);
+    color:var(--ink);
+    background:#fff;
+    transition:border-color .15s ease, box-shadow .15s ease;
 }
 
 textarea{
@@ -87,80 +166,327 @@ textarea{
 }
 
 select{
-    width:100%;
-    padding:14px;
-    border:1px solid #dcdcdc;
-    border-radius:10px;
-    font-size:15px;
-    background:#fff;
     cursor:pointer;
-    transition:.25s;
 }
 
+input:focus,
+textarea:focus,
 select:focus{
     outline:none;
-    border-color:#3b82f6;
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(27,42,74,.12);
 }
 
-.generate-btn{
-    width:100%;
-    padding:18px;
-    border:none;
-    background:#111827;
-    color:white;
-    font-size:17px;
-    border-radius:12px;
-    cursor:pointer;
-    transition:.3s;
+input.uppercase-input{
+    text-transform:uppercase;
 }
 
-.generate-btn:hover{
-    background:#000;
+/* invalid state, applied by JS once a field has been checked */
+.field.invalid input,
+.field.invalid textarea,
+.field.invalid select{
+    border-color:var(--error);
+    background:var(--error-bg);
 }
 
-.signature-preview{
-    margin-top:20px;
-    max-height:120px;
+.field.invalid input:focus,
+.field.invalid textarea:focus,
+.field.invalid select:focus{
+    box-shadow:0 0 0 3px rgba(192,57,43,.14);
+}
+
+.field.valid input,
+.field.valid textarea,
+.field.valid select{
+    border-color:var(--success);
+}
+
+.field-error{
+    min-height:18px;
+    margin-top:6px;
+    font-size:12.5px;
+    color:var(--error);
+    line-height:1.4;
+}
+
+.form-error{
+    background:var(--error-bg);
+    color:var(--error);
+    border:1px solid #F0C4BE;
+    border-radius:var(--radius-md);
+    padding:14px 16px;
+    font-size:14px;
+    font-weight:600;
+    margin-bottom:24px;
+}
+
+.form-error[hidden]{
     display:none;
 }
 
-.invoice{
-
-    width:210mm;
-
-    max-width:100%;
-
+/* affix wrapper for currency / country-code prefixed fields */
+.input-affix{
+    display:flex;
+    align-items:stretch;
+    border:1.5px solid var(--border-strong);
+    border-radius:var(--radius-md);
+    overflow:hidden;
     background:#fff;
+    transition:border-color .15s ease, box-shadow .15s ease;
+}
 
-    padding:40px;
+.input-affix:focus-within{
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(27,42,74,.12);
+}
 
+.field.invalid .input-affix{
+    border-color:var(--error);
+    background:var(--error-bg);
+}
+
+.input-affix .affix{
+    display:flex;
+    align-items:center;
+    padding:0 12px;
+    background:var(--paper);
+    color:var(--ink-soft);
+    font-size:14px;
+    font-weight:600;
+    border-right:1.5px solid var(--border-strong);
+}
+
+.input-affix input{
+    border:none;
+    border-radius:0;
+    box-shadow:none !important;
+}
+
+.input-affix input:focus{
+    box-shadow:none;
+}
+
+/* ---------------------------------------------------
+   Signature upload
+--------------------------------------------------- */
+.signature-upload{
+    position:relative;
+    border:1.5px dashed var(--border-strong);
+    border-radius:var(--radius-md);
+    padding:22px;
+    text-align:center;
+    background:var(--paper);
+    transition:border-color .15s ease, background .15s ease;
+}
+
+.signature-upload.dragover{
+    border-color:var(--accent);
+    background:#fff;
+}
+
+.signature-upload.invalid{
+    border-color:var(--error);
+    background:var(--error-bg);
+}
+
+.signature-upload input[type="file"]{
+    position:absolute;
+    inset:0;
+    opacity:0;
+    cursor:pointer;
+    width:100%;
+    height:100%;
+}
+
+.signature-upload-body{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+    color:var(--ink-soft);
+    pointer-events:none;
+}
+
+.signature-upload-body svg{
+    color:var(--ink-soft);
+    margin-bottom:4px;
+}
+
+.signature-upload-body span{
+    font-size:14px;
+    color:var(--ink);
+}
+
+.signature-upload-body small{
+    font-size:12.5px;
+}
+
+.signature-preview-row{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:16px;
+    flex-wrap:wrap;
+}
+
+.signature-preview-row img{
+    max-height:64px;
+    max-width:160px;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:var(--radius-sm);
+    padding:6px;
+}
+
+.signature-preview-meta{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:4px;
+    font-size:13px;
+    color:var(--ink-soft);
+    pointer-events:auto;
+}
+
+.link-btn{
+    background:none;
+    border:none;
+    color:var(--error);
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    padding:0;
+}
+
+/* ---------------------------------------------------
+   Buttons
+--------------------------------------------------- */
+.generate-btn{
+    width:100%;
+    padding:16px;
+    margin-top:8px;
+    border:none;
+    background:var(--accent);
+    color:#fff;
+    font-family:var(--font-body);
+    font-size:16px;
+    font-weight:600;
+    border-radius:var(--radius-md);
+    cursor:pointer;
+    transition:background .15s ease, transform .1s ease;
+}
+
+.generate-btn:hover{
+    background:var(--accent-hover);
+}
+
+.generate-btn:active{
+    transform:scale(.99);
+}
+
+.generate-btn:disabled{
+    opacity:.65;
+    cursor:not-allowed;
+}
+
+.download-btn{
+    display:block;
+    width:min(280px, 100%);
     margin:0 auto;
+    background:var(--success);
+    color:#fff;
+    padding:14px;
+    border:none;
+    border-radius:var(--radius-md);
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+    transition:background .15s ease;
+}
 
-    box-shadow:0 0 20px rgba(0,0,0,.08);
+.download-btn:hover{
+    background:var(--success-hover);
+}
 
+.download-btn:disabled{
+    opacity:.65;
+    cursor:not-allowed;
+}
+
+/* ---------------------------------------------------
+   Invoice document — fixed A4-proportioned width so it
+   captures identically on every device. Visual scaling
+   for small screens is handled purely via CSS transform
+   on the wrapper below; the element's own layout box
+   never changes.
+--------------------------------------------------- */
+.invoice-scale-wrapper{
+    width:100%;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+}
+
+.invoice{
+    width:794px;
+    flex:0 0 794px;
+    background:#fff;
+    padding:48px;
+    transform-origin:top center;
 }
 
 .invoice-header{
     display:flex;
     justify-content:space-between;
     align-items:flex-start;
+    gap:24px;
+}
+
+.invoice-brand{
+    display:block;
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--ink-soft);
+    margin-bottom:6px;
 }
 
 .invoice-header h1{
-    font-size:32px;
+    font-family:var(--font-display);
+    font-size:30px;
+    font-weight:600;
 }
 
 .invoice-meta{
     text-align:right;
-    font-size:14px;
-    line-height:28px;
+    font-size:13.5px;
+}
+
+.invoice-meta p{
+    display:flex;
+    flex-direction:column;
+    margin-bottom:10px;
+}
+
+.invoice-meta span{
+    color:var(--ink-soft);
+    font-size:11.5px;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    margin-bottom:2px;
+}
+
+hr{
+    border:none;
+    border-top:1px solid var(--border);
+    margin:26px 0;
 }
 
 .bill-section{
-    margin:35px 0;
     display:flex;
     justify-content:space-between;
     gap:40px;
+    margin-bottom:10px;
 }
 
 .bill-section div{
@@ -168,254 +494,205 @@ select:focus{
 }
 
 .bill-section h3{
+    font-family:var(--font-body);
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color:var(--ink-soft);
     margin-bottom:12px;
 }
 
 .bill-section p{
     margin-bottom:6px;
-    font-size:15px;
+    font-size:14px;
+    line-height:1.5;
 }
 
 table{
     width:100%;
     border-collapse:collapse;
-    margin-top:30px;
+    margin-top:28px;
 }
 
 table thead{
-    background:#111827;
-    color:white;
+    background:var(--ink);
+    color:#fff;
 }
 
 table th{
-    padding:14px;
+    padding:12px 14px;
     text-align:left;
-    font-size:15px;
+    font-size:13px;
+    font-weight:600;
 }
 
 table td{
-    padding:16px 14px;
-    border-bottom:1px solid #e5e5e5;
-    font-size:15px;
+    padding:14px;
+    border-bottom:1px solid var(--border);
+    font-size:14px;
 }
 
 .payment{
     display:flex;
     justify-content:space-between;
-    margin-top:45px;
+    margin-top:36px;
     gap:40px;
 }
 
 .payment h3{
-    margin-bottom:15px;
+    font-family:var(--font-body);
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color:var(--ink-soft);
+    margin-bottom:14px;
 }
 
 .payment p{
-    margin-bottom:10px;
+    margin-bottom:9px;
+    font-size:14px;
 }
 
 .totals{
-    width:280px;
+    width:260px;
     text-align:right;
 }
 
 .totals p{
-    margin-bottom:12px;
+    margin-bottom:10px;
+    font-size:14px;
+    display:flex;
+    justify-content:space-between;
 }
 
 .totals h2{
-    margin-top:10px;
-    font-size:28px;
+    display:flex;
+    justify-content:space-between;
+    font-family:var(--font-display);
+    margin:8px 0 14px;
+    font-size:24px;
+    border-top:1px solid var(--border);
+    padding-top:12px;
 }
 
 #amountWords{
-    margin-top:25px;
     font-style:italic;
-    font-size:15px;
+    font-size:13px;
+    color:var(--ink-soft);
+    display:block !important;
+    text-align:right;
 }
 
 .signature-section{
-    margin-top:70px;
+    margin-top:60px;
     text-align:right;
 }
 
 .signature-section img{
-    max-height:90px;
-    margin-bottom:10px;
+    max-height:70px;
+    margin-bottom:8px;
 }
 
 .signature-section p{
+    font-size:13px;
     font-weight:600;
+    color:var(--ink-soft);
 }
 
-.download-btn{
-    display:block;
-    width:300px;
-    margin:35px auto;
-    background:#16a34a;
-    color:white;
-    padding:16px;
-    border:none;
-    border-radius:12px;
-    cursor:pointer;
-    font-size:16px;
-}
-
-.download-btn:hover{
-    background:#15803d;
-}
-
-@media(max-width:900px){
-
-.container{
-    padding:25px;
-}
-
-.grid{
-    grid-template-columns:1fr;
-}
-
-.full{
-    grid-column:auto;
-}
-
-.invoice{
-    width:100%;
-    padding:25px;
-}
-
-.invoice-header{
-    flex-direction:column;
-    gap:20px;
-}
-
-.bill-section{
-    flex-direction:column;
-}
-
-.bill-section div{
-    width:100%;
-}
-
-.payment{
-    flex-direction:column;
-}
-
-.totals{
-    width:100%;
-    text-align:left;
-}
-}
-
-
+/* ---------------------------------------------------
+   Modal
+--------------------------------------------------- */
 .modal{
     display:none;
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,.55);
-
+    background:rgba(15,20,35,.6);
     justify-content:center;
     align-items:center;
-
     z-index:9999;
+    padding:20px;
 }
 
 .modal-content{
-
-    width:95%;
-    max-width:1100px;
-    max-height:90vh;
-
+    width:100%;
+    max-width:900px;
+    max-height:92vh;
     overflow-y:auto;
-
-    background:#fff;
-
-    border-radius:15px;
-
-    padding:30px;
-
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-
-    box-shadow:0 20px 60px rgba(0,0,0,.2);
-
+    background:var(--paper);
+    border-radius:var(--radius-lg);
+    padding:20px 20px 28px;
+    box-shadow:0 30px 80px rgba(0,0,0,.35);
 }
 
 .modal-header{
-
-    width:100%;
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
-    margin-bottom:25px;
-
+    margin-bottom:16px;
+    position:sticky;
+    top:0;
 }
 
-.download-btn{
-
-    background:#0ea5e9;
-
-    color:white;
-
-    border:none;
-
-    padding:12px 20px;
-
-    border-radius:8px;
-
-    cursor:pointer;
-
-    margin-right:10px;
-
+.modal-header h2{
+    font-family:var(--font-display);
+    font-size:20px;
+    font-weight:600;
 }
 
 .close-btn{
-
-    width:42px;
-
-    height:42px;
-
+    width:36px;
+    height:36px;
     border:none;
-
     border-radius:50%;
-
-    background:#ef4444;
-
-    color:white;
-
-    font-size:22px;
-
+    background:var(--card);
+    border:1px solid var(--border);
+    color:var(--ink);
+    font-size:16px;
     cursor:pointer;
-
     display:flex;
-
     align-items:center;
-
     justify-content:center;
-
-    transition:.2s;
-
+    transition:background .15s ease;
 }
 
 .close-btn:hover{
-
-    background:#dc2626;
-
+    background:#fff;
+    border-color:var(--border-strong);
 }
 
 .download-wrapper{
+    margin-top:22px;
+}
 
-    display:flex;
+/* ---------------------------------------------------
+   Responsive — form layout only. The invoice document
+   itself keeps a fixed layout box; the JS scales the
+   whole box down visually to fit narrow viewports.
+--------------------------------------------------- */
+@media(max-width:640px){
 
-    justify-content:center;
+    .page{
+        padding:16px 10px 48px;
+    }
 
-    margin-top:30px;
+    .container{
+        padding:24px 20px;
+        border-radius:var(--radius-md);
+    }
 
-    margin-bottom:10px;
+    .header h1{
+        font-size:26px;
+    }
 
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .full{
+        grid-column:auto;
+    }
+
+    .modal-content{
+        padding:16px 14px 22px;
+    }
 }
