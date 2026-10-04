@@ -61,6 +61,10 @@ const validators = {
         if (parseFloat(clean) <= 0) return "Amount must be greater than zero.";
         return "";
     },
+    collegeName: v => {
+        if (!v.trim()) return "Enter the college name.";
+        return "";
+    },
     invoiceDescription: v => {
         if (!v) return "Select an invoice description.";
         return "";
@@ -326,6 +330,7 @@ form.addEventListener("submit", e => {
     document.getElementById("billEmail").textContent = g("email");
     document.getElementById("billPan").textContent = "PAN: " + g("pan").toUpperCase();
     document.getElementById("description").textContent = g("invoiceDescription");
+    document.getElementById("collegeNameDisplay").textContent = g("collegeName");
     document.getElementById("rate").textContent = amountDisplay;
     document.getElementById("tableAmount").textContent = amountDisplay;
     document.getElementById("subtotal").textContent = amountDisplay;
@@ -372,10 +377,10 @@ document.getElementById("downloadBtn").addEventListener("click", async () => {
         const pdf = new jsPDF("p", "mm", "a4");
         const pageWidth = 210;
         const w = pageWidth;
-        const h = canvas.height * w / canvas.width;
+        const h = canvas.height * w / canvas.width;  
         pdf.addImage(img, "PNG", 0, 0, w, h);
         pdf.save((document.getElementById("invoiceNumber").textContent || "Invoice") + ".pdf");
-    } finally {
+    } finally {     
         invoiceEl.style.transform = previousTransform;
         fitInvoiceToViewport();
         btn.disabled = false;
